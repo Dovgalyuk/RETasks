@@ -1,0 +1,181 @@
+Общее отличие, переменные берутся сразу в работу минуя запись DWORD PTR [rbp-4], edi 
+Некоторые операции преолразованы, в них исполььзованы такие операторы как xor, test, setne
+
+fd:
+        mov     eax, edi
+        mov     edi, 3435973837
+        imul    rax, rdi
+        shr     rax, 35
+        ret
+
+        
+fd1:
+        mov     eax, edi
+        shr     eax, 4
+        ret
+fd2:
+        mov     eax, edi
+        xor     edx, edx
+        div     esi
+        ret
+f:
+        cmp     edi, 20
+        jg      .L6
+        xor     eax, eax
+        test    edi, edi
+        jle     .L5
+        cmp     edi, 20
+        ja      .L8
+        mov     edi, edi
+        jmp     [QWORD PTR .L10[0+rdi*8]]
+.L10:
+        .quad   .L8
+        .quad   .L15
+        .quad   .L8
+        .quad   .L8
+        .quad   .L8
+        .quad   .L8
+        .quad   .L13
+        .quad   .L8
+        .quad   .L8
+        .quad   .L8
+        .quad   .L12
+        .quad   .L8
+        .quad   .L11
+        .quad   .L8
+        .quad   .L8
+        .quad   .L8
+        .quad   .L8
+        .quad   .L8
+        .quad   .L8
+        .quad   .L8
+        .quad   .L9
+.L13:
+        mov     eax, 7
+        ret
+.L15:
+        mov     eax, 5
+.L5:
+        ret
+.L8:
+        xor     eax, eax
+        ret
+.L6:
+        xor     eax, eax
+        cmp     edi, 62
+        sete    al
+        ret
+.L9:
+        mov     eax, 8
+        ret
+.L12:
+        mov     eax, 3
+        ret
+.L11:
+        mov     eax, 4
+        ret
+f2:
+        cmp     edi, 1000
+        je      .L20
+        jg      .L19
+        mov     eax, 7
+        cmp     edi, 6
+        je      .L17
+        mov     eax, 3
+        cmp     edi, 10
+        jne     .L29
+.L17:
+        ret
+.L29:
+        xor     eax, eax
+        cmp     edi, 1
+        sete    al
+        lea     eax, [rax+rax*4]
+        ret
+.L19:
+        mov     eax, 8
+        cmp     edi, 6000
+        je      .L17
+        xor     eax, eax
+        cmp     edi, 10000
+        sete    al
+        sal     eax, 2
+        ret
+.L20:
+        mov     eax, 9
+        ret
+if1:
+        xor     eax, eax
+        test    edi, edi
+        setne   al
+        add     eax, 1
+        ret
+if2:
+        cmp     edi, 50
+        mov     edx, 26
+        mov     eax, 12
+        cmovne  eax, edx
+        ret
+if3:
+        mov     eax, esi
+        test    edi, edi
+        je      .L39
+        test    edx, edx
+        je      .L39
+        ret
+.L39:
+        mov     eax, edx
+        ret
+func2:
+        mov     eax, OFFSET FLAT:t
+        mov     edx, OFFSET FLAT:s
+.L44:
+        mov     QWORD PTR [rdx], rax
+        add     rax, 4
+        add     rdx, 8
+        cmp     rax, OFFSET FLAT:t+400
+        jne     .L44
+        ret
+f1:
+        test    edi, edi
+        je      .L54
+        push    rbx
+        mov     ebx, edi
+.L48:
+        sub     ebx, 1
+        xor     eax, eax
+        call    g
+        test    ebx, ebx
+        jne     .L48
+        pop     rbx
+        ret
+.L54:
+        ret
+ff2:
+        test    edi, edi
+        je      .L65
+        push    rbx
+        mov     ebx, edi
+.L59:
+        sub     ebx, 1
+        xor     eax, eax
+        call    g
+        test    ebx, ebx
+        jne     .L59
+        pop     rbx
+        ret
+.L65:
+        ret
+f3:
+        mov     eax, DWORD PTR [rdi]
+        mov     edx, 10
+        mov     esi, 5
+.L70:
+        lea     ecx, [rax+2]
+        cmp     eax, 4
+        mov     eax, ecx
+        cmove   eax, esi
+        sub     edx, 1
+        jne     .L70
+        mov     DWORD PTR [rdi], eax
+        ret
