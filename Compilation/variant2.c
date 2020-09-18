@@ -178,7 +178,7 @@ int f2(int a)
 f2:
         push    rbp
         mov     rbp, rsp
-        mov     DWORD PTR [rbp-4], edi
+        mov     DWORD PTR [rbp-4], edi - объявление переменных
         cmp     DWORD PTR [rbp-4], 10000
         je      .L19
         cmp     DWORD PTR [rbp-4], 10000
@@ -241,7 +241,7 @@ int if1(int a)
 if1:
         push    rbp
         mov     rbp, rsp
-        mov     DWORD PTR [rbp-20], edi
+        mov     DWORD PTR [rbp-20], edi - объявление переменных
         cmp     DWORD PTR [rbp-20], 0
         jne     .L28
         mov     eax, 1
@@ -272,7 +272,7 @@ int if2(int a)
 if2:
         push    rbp
         mov     rbp, rsp
-        mov     DWORD PTR [rbp-20], edi
+        mov     DWORD PTR [rbp-20], edi - объявление переменных
         cmp     DWORD PTR [rbp-20], 50
         jne     .L32
         mov     eax, 12
@@ -303,9 +303,9 @@ int if3(int a, int b, int c)
 if3:
         push    rbp
         mov     rbp, rsp
-        mov     DWORD PTR [rbp-4], edi
-        mov     DWORD PTR [rbp-8], esi
-        mov     DWORD PTR [rbp-12], edx
+        mov     DWORD PTR [rbp-4], edi  - \
+        mov     DWORD PTR [rbp-8], esi  - объявление переменных
+        mov     DWORD PTR [rbp-12], edx - /
         cmp     DWORD PTR [rbp-4], 0                                                                   EIGHT
         je      .L36
         cmp     DWORD PTR [rbp-12], 0
@@ -318,6 +318,9 @@ if3:
         pop     rbp
         ret
         переменные хранятся в rbr,rsp, [rbp - 4, -8, -12] , eax
+        ветвление представлено операторами je, jmp и сравнением
+        а так же метками .L{N} - N - номер метки
+
                                                         |
 ========================================================/
 
@@ -351,7 +354,9 @@ func2:
         nop
         pop     rbp
         ret
-        переменные хранятся в rbr,rsp
+        переменные хранятся в rbr,rsp, [rbp-4] eax
+        {rax, rdx,  s[0+rax*8] t[rax] }- массивы 
+        цикл организован с помощью сравнений и переходов по меткам с операторами jmp и jne
                                                         |
 ========================================================/
 
@@ -372,7 +377,7 @@ f1:
         push    rbp
         mov     rbp, rsp
         sub     rsp, 16
-        mov     DWORD PTR [rbp-4], edi                                                                      TEN
+        mov     DWORD PTR [rbp-4], edi  - объявление переменных                                                  TEN
         jmp     .L42
 .L43:
         sub     DWORD PTR [rbp-4], 1
@@ -385,7 +390,9 @@ f1:
         nop
         leave
         ret
-        переменные хранятся в rbr,rsp
+        переменные хранятся в rbr,rsp, [rbp-4], eax
+        оператор ветвления организован с помощью переходов по меткам и операторов je, jmp
+        с помощью сравнения и переходов организован цикл
                                                         |
 ========================================================/
 
@@ -405,7 +412,7 @@ ff2:
         push    rbp
         mov     rbp, rsp                                                                                    ELEVEN
         sub     rsp, 16
-        mov     DWORD PTR [rbp-4], edi
+        mov     DWORD PTR [rbp-4], edi - передача переменных
 .L45:
         cmp     DWORD PTR [rbp-4], 0
         je      .L47
@@ -417,7 +424,9 @@ ff2:
         nop
         leave
         ret
-        переменные хранятся в rbr,rsp
+        переменные хранятся в rbr,rsp, [rbp-4], eax
+        осуществляется вызов g но ничего не делает, ветвление оргнизовано с помощью 
+        меток и операторов je, jmp а так же с помощью этого организован цикл
                                                         |
 ========================================================/
 
@@ -466,5 +475,8 @@ f3:
         pop     rbp
         ret
         переменные хранятся в rbr,rsp
+        ветвление оргнизовано с помощью меток и операторов je, jmp, jle, операторов сравнения
+        а так же с помощью этого организован цикл с условием
+
                                                         |
 ========================================================/
