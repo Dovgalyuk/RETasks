@@ -1,0 +1,302 @@
+unsigned int fd(unsigned int a)
+{
+    return a / 10;
+}
+
+mov     ECX, EDI
+        mov     EAX, 3435973837
+        imul    RAX, RCX
+        shr     RAX, 35
+        ret
+        переменные хранятся в ECX,EDI,EAX,RAX,RCX
+
+=================================================
+unsigned int fd1(unsigned int a)
+{
+    return a / 16;
+}
+fd1:                                    
+        shr     EDI, 4
+        mov     EAX, EDI
+        ret
+переменные хранятся в EDI,EAX
+=================================================
+
+unsigned int fd2(unsigned int a, unsigned int b)
+{
+    return a / b;
+}
+
+fd2:                                    # @fd2
+        mov     EAX, EDI
+        xor     EDX, EDX
+        div     ESI
+        ret
+        
+        переменные хранятся в EDI,EAX,ESI,EDX
+====================================================
+
+int f(int a)
+{
+    switch (a)
+    {
+    case 1:
+        return 5;
+    case 6:
+        return 7;
+    case 10:
+        return 3;
+    case 12:
+        return 4;
+    case 62:
+        return 1;
+    case 20:
+        return 8;
+    }
+    return 0;
+}
+
+  переменные хранятся в EDI,EAX
+  Ветвление образуется с помощью cmp,jb,je,jne и перехода по меткам .L[N]
+
+=======================================
+int f2(int a)
+{
+    switch (a)
+    {
+    case 1:
+        return 5;
+    case 6:
+        return 7;
+    case 10:
+        return 3;
+    case 1000:
+        return 9;
+    case 6000:
+        return 8;
+    case 10000:
+        return 4;
+    }
+    return 0;
+}
+f2:                                     # @f2
+        cmp     EDI, 9999
+        jg      .LBB0_11
+        cmp     EDI, 5999
+        jg      .LBB0_9
+        cmp     EDI, 999
+        jg      .LBB0_7
+        mov     EAX, 5
+        cmp     EDI, 1
+        je      .LBB0_14
+        cmp     EDI, 6
+        je      .LBB0_15
+        cmp     EDI, 10
+        jne     .LBB0_13
+        mov     EAX, 3
+        ret
+.LBB0_7:
+        cmp     EDI, 1000
+        jne     .LBB0_13
+        mov     EAX, 9
+        ret
+.LBB0_9:
+        cmp     EDI, 6000
+        jne     .LBB0_13
+        mov     EAX, 8
+        ret
+.LBB0_11:
+        cmp     EDI, 10000
+        jne     .LBB0_13
+        mov     EAX, 4
+        ret
+.LBB0_13:
+        xor     EAX, EAX
+.LBB0_14:
+        ret
+.LBB0_15:
+        mov     EAX, 7
+        ret
+
+
+  переменные хранятся в EDI,EAX
+  Ветвление образуется с помощью cmp,jb,je,jne и перехода по меткам .L[N]
+===========================================
+
+int if1(int a)
+{
+    int b = a == 0 ? 1 : 2;
+    return b;
+}
+int if2(int a)
+{
+    int b = a == 50 ? 12 : 26;
+    return b;
+}
+int if3(int a, int b, int c)
+{
+    if (a && c)
+        return b;
+    else
+        return c;
+}
+
+if1:                                    # @if1
+        cmp     EDI, 1
+        mov     EAX, 1
+        sbb     EAX, -1
+        ret
+
+if2:                                    # @if2
+        mov     ECX, 12
+        cmp     EDI, 50
+        mov     EAX, 26
+        cmove   EAX, ECX
+        ret
+
+if3:                                    # @if3
+        test    EDX, EDX
+        sete    AL
+        test    EDI, EDI
+        sete    CL
+        or      CL, AL
+        cmovne  ESI, EDX
+        mov     EAX, ESI
+        ret
+    переменные хранятся в EDI,EAX,ECX,AL,CL
+  Ветвление образуется с помощью cmp,sbb в примере if1,cmove.test,sete,or
+===============================================================
+int *s[100];
+int t[100];
+void f2()
+{
+    for (int i = 0 ; i != 100 ; ++i)
+        s[i] = &t[i];
+}
+
+f2:                                     # @f2
+        xor     EAX, EAX
+.LBB0_1:                                # =>This Inner Loop Header: Depth=1
+        lea     RCX, QWORD PTR [RAX + t]
+        mov     QWORD PTR [RAX + RAX + s], RCX
+        add     RAX, 4
+        cmp     EAX, 400
+        jne     .LBB0_1
+        ret
+        
+       переменные хранятся в EAX,RCX, массивы [RAX+t],[RAX+RAX+s]
+       движение по массиву происхоит при помощи lea, cmp,jne и метки
+
+==============================================================
+void g();
+
+void f1(int a)
+{
+    while (a)
+    {
+        --a;
+        g();
+    }
+}
+
+void f2(int a)
+{
+L:
+    if (a)
+    {
+        --a;
+        g();
+        goto L;
+    }
+}
+
+void f3(int *p)
+{
+    for (int i = 0 ; i < 10 ; ++i)
+    {
+        ++*p;
+        if (*p == 5) continue;
+        ++*p;
+    }
+}
+
+
+
+
+f1:                                     # @f1
+        push    RBP
+        mov     RBP, RSP
+        push    RBX
+        push    RAX
+        mov     EBX, EDI
+        test    EBX, EBX
+        je      .LBB0_2
+.LBB0_1:                                # %.lr.ph
+        xor     AL, AL
+        call    g
+        dec     EBX
+        jne     .LBB0_1
+.LBB0_2:                                # %._crit_edge
+        add     RSP, 8
+        pop     RBX
+        pop     RBP
+        ret
+
+f2:                                     # @f2
+        push    RBP
+        mov     RBP, RSP
+        push    RBX
+        push    RAX
+        mov     EBX, EDI
+        test    EBX, EBX
+        je      .LBB1_2
+.LBB1_1:                                # %.lr.ph
+        xor     AL, AL
+        call    g
+        dec     EBX
+        jne     .LBB1_1
+.LBB1_2:                                # %._crit_edge
+        add     RSP, 8
+        pop     RBX
+        pop     RBP
+        ret
+
+f3:                                     # @f3
+        mov     ECX, DWORD PTR [RDI]
+        mov     EAX, 5
+        cmp     ECX, 4
+        lea     ECX, DWORD PTR [RCX + 2]
+        cmove   ECX, EAX
+        cmp     ECX, 4
+        lea     ECX, DWORD PTR [RCX + 2]
+        cmove   ECX, EAX
+        cmp     ECX, 4
+        lea     ECX, DWORD PTR [RCX + 2]
+        cmove   ECX, EAX
+        cmp     ECX, 4
+        lea     ECX, DWORD PTR [RCX + 2]
+        cmove   ECX, EAX
+        cmp     ECX, 4
+        lea     ECX, DWORD PTR [RCX + 2]
+        cmove   ECX, EAX
+        cmp     ECX, 4
+        lea     ECX, DWORD PTR [RCX + 2]
+        cmove   ECX, EAX
+        cmp     ECX, 4
+        lea     ECX, DWORD PTR [RCX + 2]
+        cmove   ECX, EAX
+        cmp     ECX, 4
+        lea     ECX, DWORD PTR [RCX + 2]
+        cmove   ECX, EAX
+        cmp     ECX, 4
+        lea     ECX, DWORD PTR [RCX + 2]
+        cmove   ECX, EAX
+        cmp     ECX, 4
+        lea     ECX, DWORD PTR [RCX + 2]
+        cmove   ECX, EAX
+        mov     DWORD PTR [RDI], ECX
+        ret
+        
+        переменные хранятся в ECX,RSP,RBP,EBX,EDI
+        массивы RAX, [RCX+2],[RDI]
+        переходы по ним осуществляются с помощью cmp,cmove,lea,jne,je и меток
