@@ -13,7 +13,7 @@ mov     ECX, EDI
         imul    RAX, RCX
         shr     RAX, 35
         ret
-        переменные хранятся в ECX,EDI,EAX,RAX,RCX
+        переменные хранятся в ECX,EDI,EAX
 
 =================================================
 unsigned int fd1(unsigned int a)
@@ -168,7 +168,7 @@ if3:                                    # @if3
         cmovne  ESI, EDX
         mov     EAX, ESI
         ret
-    переменные хранятся в EDI,EAX,ECX,AL,CL
+    переменные хранятся в EDI,EAX,ECX
   Ветвление образуется с помощью cmp,sbb в примере if1,cmove.test,sete,or
 ===============================================================
 int *s[100];
