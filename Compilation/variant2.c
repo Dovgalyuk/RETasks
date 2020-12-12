@@ -262,7 +262,7 @@ int if1(int a)
         mov     DWORD PTR [RSP - 8], EDI
         mov     EAX, DWORD PTR [RSP - 8]
         ret
-        переменные хранятся в [RSP - 4], [RSP - 8], еах,edi
+        переменные хранятся в еах,edi
 
 =================
 int if2(int a)
@@ -282,7 +282,7 @@ if2:                                    # @if2
         mov     EAX, DWORD PTR [RSP - 8]
         ret
     
-        переменные хранятся в [RSP - 4], [RSP - 8], еах,edi
+        переменные хранятся в еах,edi
 
 ===================
 int if3(int a, int b, int c)
@@ -309,7 +309,7 @@ if3:                                    # @if3
 .LBB0_4:
         mov     EAX, DWORD PTR [RSP - 4]
         ret
-         переменные хранятся в [RSP - 4], [RSP - 8], [RSP - 12], [RSP - 12], еах,edi
+         переменные хранятся в  еах,edi,esi,edx
          ветвления при сравнении организованны с помощью je,ccmp,jmp в
          метки .L{N} - N - номер метки
 
