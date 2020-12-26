@@ -1,0 +1,192 @@
+
+
+
+1. Переменные программы:
+    В программе используются следующие переменные:
+    функция f:
+        var_14, принимаемая
+        var_8, для вывода результата
+         var_4 для счетчика
+    ф. main:
+        var_14 для считывания с клавиатура
+         var_10, для вывода результата
+          var_C, для счетчика
+          var_8 для канарейки
+
+    глобальная переменная x для возведения этого числа в степень
+
+2. Функции программы:
+    стандартные функции scanf printf и функция f , которая возвращает 2^число -2
+
+3. Результат работы программы:
+    Результатом работы программы является вывод числа 2 в степени равной введенному числу
+                                                                 из которого вычитается 2
+
+    ; __int64 __fastcall f(int)
+                 public _Z1fi
+ _Z1fi           proc near               ; CODE XREF: main+5B↓p
+
+ var_14          = dword ptr -14h       переменные
+ var_8           = dword ptr -8
+ var_4           = dword ptr -4
+
+                 push    rbp
+                 mov     rbp, rsp
+
+                 mov     [rbp+var_14], edi
+                 mov     [rbp+var_8], 1
+                 mov     [rbp+var_4], 1
+
+ loc_70F:                                ; CODE XREF: f(int)+30↓j
+                 mov     eax, [rbp+var_4]
+                 cmp     eax, [rbp+var_14]
+                 jg      short loc_72C
+                 mov     eax, cs:x   4x байтовая переменная
+                 mov     edx, [rbp+var_8]
+                 imul    eax, edx
+                 mov     [rbp+var_8], eax
+                 add     [rbp+var_4], 1
+                 jmp     short loc_70F
+ ; ---------------------------------------------------------------------------
+
+ loc_72C:                                ; CODE XREF: f(int)+1B↑j
+                 mov     eax, [rbp+var_8]
+                 pop     rbp
+                 retn
+ _Z1fi           endp
+
+
+
+
+ ; int __cdecl main(int argc, const char **argv, const char **envp)
+                 public main
+ main            proc near               ; DATA XREF: _start+1D↑o
+
+ var_14          = dword ptr -14h # переменные 4ч байтовые 14 параметры
+ var_10          = dword ptr -10h №
+
+ var_C           = dword ptr -0Ch
+ var_8           = qword ptr -8 для канарейки
+
+                 push    rbp
+                 mov     rbp, rsp
+                 sub     rsp, 20h
+
+                 mov     rax, fs:28h
+                 mov     [rbp+var_8], rax  канарейка
+
+                 xor     eax, eax
+                 mov     [rbp+var_10], 0
+
+                 lea     rdi, format     ; "Enter N: "
+                 mov     eax, 0
+                 call    _printf
+
+                 lea     rax, [rbp+var_14]
+                 mov     rsi, rax
+                 lea     rdi, aD         ; "%d"
+                 mov     eax, 0
+                 call    _scanf
+
+                 mov     [rbp+var_C], 1
+
+ loc_77F:                                ; CODE XREF: main+67↓j
+                 mov     eax, [rbp+var_14]
+                 cmp     [rbp+var_C], eax
+                 jg      short loc_79A
+                 mov     eax, [rbp+var_C]
+                 mov     edi, eax        ; int
+                 call    _Z1fi           ; f(int)
+                 add     [rbp+var_10], eax
+                 add     [rbp+var_C], 1
+                 jmp     short loc_77F
+ ; ---------------------------------------------------------------------------
+
+ loc_79A:                                ; CODE XREF: main+54↑j
+                 mov     eax, [rbp+var_10]
+                 mov     esi, eax
+                 lea     rdi, aResultIsD ; "Result is %d"
+                 mov     eax, 0
+                 call    _printf
+                 mov     eax, 0
+
+                 mov     rdx, [rbp+var_8]
+                 xor     rdx, fs:28h        проверка канарейки
+
+                 jz      short locret_7C9
+                 call    ___stack_chk_fail если не выполнено хор
+
+ locret_7C9:                             ; CODE XREF: main+91↑j
+                 leave
+                 retn
+ main            endp
+
+
+Код на Си:
+
+int x = 2;
+
+int f(int var_14)
+{
+    int var_8 = 1;
+    int var_4 = 1;
+    while (var_14 > var_4)
+    {
+        var_8 *= x;
+        var_4++;
+    }
+    return var_8;
+}
+
+
+
+int main()
+{
+    int var_14, var_10, var_C;
+    char format[] = "Enter N: ";
+    char aD[] = "%d";
+    char aResultIsD[] = "Result is %d";
+    var_10 = 0;
+    printf(format);
+    scanf(aD,var_14);
+    var_C = 1;
+    while (var_C < var_14)
+    {
+        var_10 += f(var_C);
+        var_C++;
+    }
+    printf(aResultIsD, var_10);
+    return 0;
+}
+
+Результаты:
+    Результаты работы исходной программы:
+    1    2
+    2    6
+    3    14
+    4    30
+    5    62
+    6    126
+    10    2046
+    11    4094
+    20    2097150
+    21    4194302
+    22    8388606
+    30    2147483646
+    32    -2
+    33    -2
+    Результаты работы написанной на Си:
+    1    2
+    2    6
+    3    14
+    4    30
+    5    62
+    6    126
+    10    2046
+    11    4094
+    20    2097150
+    21    4194302
+    22    8388606
+    30    2147483646
+    32    -2
+    33    -2
