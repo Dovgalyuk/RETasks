@@ -5,19 +5,30 @@ fd:
         mov     eax, edi
         mov     edi, 3435973837
         imul    rax, rdi
-        shr     rax, 35
+        shr     rax, 35 
         ret
 
+        // отличий почти нет, компилятор преобразовал 
+        //shr     rax, 32
+        //shr     eax, 3
+        // в shr rax, 35
+                
         
 fd1:
         mov     eax, edi
         shr     eax, 4
         ret
+        
+        // минуется работа с памятью такая как mov rbp, rsp, pop rbp
 fd2:
         mov     eax, edi
         xor     edx, edx
         div     esi
         ret
+        
+        //работа с переменными производится прямо в регистрах esi, edx
+        
+         
 f:
         cmp     edi, 20
         jg      .L6
@@ -74,6 +85,8 @@ f:
 .L11:
         mov     eax, 4
         ret
+        
+        // существенных изменений нет
 f2:
         cmp     edi, 1000
         je      .L20
@@ -104,12 +117,16 @@ f2:
 .L20:
         mov     eax, 9
         ret
+        
+        // компилятор оптимизировал логику обработки ветвления изменив операции сравнения - перенес их в другие блоки программы
 if1:
         xor     eax, eax
         test    edi, edi
         setne   al
         add     eax, 1
         ret
+        
+        // setne выполняет проверку и записывает ответ, далее add прибаляет 1 
 if2:
         cmp     edi, 50
         mov     edx, 26
