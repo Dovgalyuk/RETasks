@@ -1,0 +1,117 @@
+auth_overflow.c:
+	Сперва рассмотрим функцию check_authentification,тк она отвечает
+	за проверку пароля.
+
+ check_authentication proc near          ; CODE XREF: main+48↓p
+
+ src             = qword ptr -28h
+ dest            = byte ptr -20h
+ var_4           = dword ptr -4
+
+                 push    rbp
+                 mov     rbp, rsp
+                 sub     rsp, 30h
+                 mov     [rbp+src], rdi
+                 mov     [rbp+var_4], 0
+                 mov     rdx, [rbp+src]
+                 lea     rax, [rbp+dest]
+                 mov     rsi, rdx        ; src
+                 mov     rdi, rax        ; dest
+                 call    _strcpy
+                 lea     rax, [rbp+dest]
+                 lea     rsi, s2         ; "brillig"
+                 mov     rdi, rax        ; s1
+                 call    _strcmp
+                 test    eax, eax
+                 jnz     short loc_40064B
+                 mov     [rbp+var_4], 1
+
+ loc_40064B:                             ; CODE XREF: check_authentication+3B↑j
+                 lea     rax, [rbp+dest]
+                 lea     rsi, aOutgrabe  ; "outgrabe"
+                 mov     rdi, rax        ; s1
+                 call    _strcmp
+                 test    eax, eax
+                 jnz     short loc_400669
+                 mov     [rbp+var_4], 1
+
+ loc_400669:                             ; CODE XREF: check_authentication+59↑j
+                 mov     eax, [rbp+var_4]
+                 leave
+                 retn
+ check_authentication endp
+
+ Изучив функцию, узнаем, что переменные хранятся в ячейках памяти [rbp-28h],[rbp-20h],[rbp-4]
+ Попробуем определить какие места принадлежат переменным
+ rbp-4 отвечает за auth_flag,тк rbp-4 возвращается в конце ,аналогично auth_flag
+ rbp-20 скорее всего принадлежит password_buffer,тк перед вызовом strcmp она помешается в rdi ,
+ для сравнения с введенным паролем
+ следовательно в rbp-28 хранится password
+
+ Чтобы взломать программу нужно изменить значение auth_flag, чтобы оно было отлично от 0.
+ Для этого нужно ввести больше 28 символов,при чем последний символ не должен быть равен 0, чтобы значение
+ хотябы одного байта auth_flag изменилось и сделало auth_flag отличным от нуля.
+ Поэтому для взлома нужно ввести 29 символов,исключающие нулевой.
+
+
+
+auth_overflow2.c:
+Для начала аналигично первой функции рассмотрим check_authentification:
+
+ public check_authentication
+ check_authentication proc near          ; CODE XREF: main+14↓p
+
+ s1              = byte ptr -10h
+
+                 push    rbp
+                 mov     rbp, rsp
+                 sub     rsp, 10h
+                 lea     rax, [rbp+s1]
+                 mov     rsi, rax
+                 lea     rdi, aS         ; "%s"
+                 mov     eax, 0
+                 call    ___isoc99_scanf
+                 lea     rax, [rbp+s1]
+                 lea     rsi, s2         ; "brillig"
+                 mov     rdi, rax        ; s1
+                 call    _strcmp
+                 test    eax, eax
+                 jnz     short loc_400610
+                 mov     eax, 1
+                 jmp     short locret_400633
+ ; ---------------------------------------------------------------------------
+
+ loc_400610:                             ; CODE XREF: check_authentication+35↑j
+                 lea     rax, [rbp+s1]
+                 lea     rsi, aOutgrabe  ; "outgrabe"
+                 mov     rdi, rax        ; s1
+                 call    _strcmp
+                 test    eax, eax
+                 jnz     short loc_40062E
+                 mov     eax, 1
+                 jmp     short locret_400633
+ ; ---------------------------------------------------------------------------
+
+ loc_40062E:                             ; CODE XREF: check_authentication+53↑j
+                 mov     eax, 0
+
+ locret_400633:                          ; CODE XREF: check_authentication+3C↑j
+                                         ; check_authentication+5A↑j
+                 leave
+                 retn
+ check_authentication endp
+
+ И помимо нее нужно узнать адрес функции granted:
+ 00000000004005A7                 public granted
+
+ На стеке моно выделить переменную в ячейке rbp, она будет содержать в себе password_buffer,
+ тк она будет загружаться в rsi перед вызовом scanf
+
+ Чтобы взломать программу нужно переписать адрес возврата,поскольку scanf и strcpy не
+ умеют проверять границы. Входные данные должны иметь следующий вид:
+ Чтобы заполнить будефер и указатель потребуется 24 символа,
+  после чего нужно приписать туда адрес функции granted,
+  который имеет вид \xa7\x05\x40\x00\x00\x00\x00\x00
+
+
+  
