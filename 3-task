@@ -1,0 +1,149 @@
+auth_overflow — 1
+Декомпилируем файл, находим функции отвечающие за работу программы, main и chek_authentication
+
+push    rbp
+mov     rbp, rsp
+sub     rsp, 10h
+mov     [rbp+var_4], edi
+mov     [rbp+var_10], rsi
+cmp     [rbp+var_4], 1
+jg      short loc_4006A8
+// - --- - -- - - - --
+loc_4006A8:
+mov     rax, [rbp+var_10]
+add     rax, 8
+mov     rax, [rax]
+mov     rdi, rax
+call    check_authentication - вызов функции аутентификации, далее сравнение и выполнение действий Acress granted или denied
+Далее по коду отслеживаем вызовы нужных нам операторов и выясняем, 
+что из функции chek_authentication возвращается значение ячейки -0x4 в которую мы попадаем при успешном сравнении в test %eax, %eax
+то есть нам надо добиться, чтобы байты были отличны от 0, чтобы код пустил нас в секцию с флагом, так же из работы с памятью в функции аутентификации видно, 
+что работа идет со значениями 0х20, 0х4, 0х28, 0х14, путем нехитрой математики выясняем, 
+что для переполнения буфера достаточно набрать 29+ символов в первом аргументе при запуске программы, 
+чтобы она не смогла корректно отработать буфер, т. к. при компиляции с тэгом -fno-stack-protector, 
+нет соответствующей защиты и логика работы программы нарушается по вине скорее компилятора чем программиста. 
+test    eax, eax
+jz      short loc_4006E5
+// - --- - -- - - - -- 
+
+mov     rax, [rbp+var_10]
+mov     rax, [rax]
+mov     rsi, rax
+lea     rdi, format     ; "Usage: %s <password>\n"
+mov     eax, 0
+call    _printf
+mov     edi, 0          ; status
+call    _exit
+
+lea     rdi, s          ; "\n-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+call    _puts
+lea     rdi, aAccessGranted ; "      Access Granted."
+call    _puts
+lea     rdi, asc_4007DE ; "-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+call    _puts
+jmp     short loc_4006F1
+
+loc_4006E5:
+lea     rdi, aAccessDenied ; "\nAccess Denied."
+call    _puts
+
+loc_4006F1:
+mov     eax, 0
+leave
+retn
+main endp
+
+Далее вторая задача, имеет усложненный вид, в ней пароль вводится соответственно через клавиатуру, а так же необходимо попасть в отдельную функцию granted
+push    rbp
+mov     rbp, rsp
+sub     rsp, 10h
+mov     [rbp+var_4], edi
+mov     [rbp+var_10], rsi
+mov     eax, 0
+call    check_authentication
+test    eax, eax
+jz      short loc_40065E
+
+// - --- - -- - - - -- 
+
+mov     eax, 0
+call    granted
+jmp     short loc_40066A
+
+// - --- - -- - - - -- 
+
+loc_40065E:
+lea     rdi, aAccessDenied ; "\nAccess Denied."
+call    _puts
+
+// - --- - -- - - - -- 
+
+loc_40066A:
+mov     eax, 0
+leave
+retn
+main endp
+
+Для выполнения задания была использована статья 
+https://habr.com/ru/post/266591/, адресс функции granted 0x4005A7 и он же в виде символов «.@.....» с помощью программы IDA Pro.
+Далее необходимо подставить 24 символа и адрес функции granted чтобы с помощью используемой ранее уязвимости переполнения буфера попасть в функцию granted, 
+без используемых выше флагов компиляции данное действие невозможно.
+
+Далее функции main и chek_authentication 
+push    rbp
+mov     rbp, rsp
+sub     rsp, 10h
+lea     rax, [rbp+s1]
+mov     rsi, rax
+lea     rdi, aS         ; "%s"
+mov     eax, 0
+call    ___isoc99_scanf
+lea     rax, [rbp+s1]
+lea     rsi, s2         ; "brillig"
+mov     rdi, rax        ; s1
+call    _strcmp
+test    eax, eax
+jnz     short loc_400610
+//----------------------------------------------
+loc_400610:
+lea     rax, [rbp+s1]
+lea     rsi, aOutgrabe  ; "outgrabe"
+mov     rdi, rax        ; s1
+call    _strcmp
+test    eax, eax
+jnz     short loc_40062E
+//----------------------------------------------
+mov     eax, 1
+jmp     short locret_400633
+//----------------------------------------------
+mov     eax, 1
+jmp     short locret_400633
+//----------------------------------------------
+loc_40062E:
+mov     eax, 0
+//----------------------------------------------
+locret_400633:
+leave
+retn
+check_authentication endp
+//----------------------------------------------
+
+
+Granted
+
+0x4005A7 - нужный адресс 
+
+public granted
+granted proc near
+push    rbp
+mov     rbp, rsp
+lea     rdi, s          ; "\n-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+call    _puts
+lea     rdi, aAccessGranted ; "      Access Granted."
+call    _puts
+lea     rdi, asc_400737 ; "-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+call    _puts
+nop
+pop     rbp
+retn
+granted endp 
