@@ -9,7 +9,7 @@
 /* unsigned int fd2(unsigned int a, unsigned int b)  */
 /* {  */
 /*         return a / b;  */
-/* } */
+/* } */ 
 
 /* O0: */
 /* 0000000000400496 <fd2>: */
