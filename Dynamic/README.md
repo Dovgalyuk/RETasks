@@ -52,3 +52,7 @@ https://github.com/Dovgalyuk/calc
 Здесь задания нет, но можно почитать про исследование покрытия кода.
 
 [[https://habr.com/ru/company/otus/blog/562012/]]
+
+# Ссылки
+
+Фаззинг: https://www.youtube.com/watch?v=ig5NTJfb0ls&t=3710s
