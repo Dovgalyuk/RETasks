@@ -1,0 +1,148 @@
+// Кожевников А.В. гр. 1093
+
+ public check_authentication
+ check_authentication proc near         
+
+ src             = qword ptr -28h   // Пароль 
+ dest            = byte ptr -20h    // Буфер пароля 
+ var_4           = dword ptr -4     // Флаг аутентификации 
+
+ ; __unwind {
+                 push    rbp
+                 mov     rbp, rsp
+                 sub     rsp, 30h
+                 mov     [rbp+src], rdi
+                 mov     [rbp+var_4], 0 //  записываем в флаг 0,
+                                        //  это значение и нужно быдет перезаписать. 
+                 mov     rdx, [rbp+src]
+                 lea     rax, [rbp+dest]
+                 mov     rsi, rdx        ; src
+                 mov     rdi, rax        ; dest
+                 call    _strcpy
+                 lea     rax, [rbp+dest]
+                 lea     rsi, s2         ; "brillig"
+                 mov     rdi, rax        ; s1
+                 call    _strcmp
+                 test    eax, eax
+                 jnz     short loc_40064B
+                 mov     [rbp+var_4], 1
+
+ loc_40064B:                       
+                 lea     rax, [rbp+dest]
+                 lea     rsi, aOutgrabe  ; "outgrabe"
+                 mov     rdi, rax        ; s1
+                 call    _strcmp
+                 test    eax, eax
+                 jnz     short loc_400669
+                 mov     [rbp+var_4], 1
+
+ loc_400669:                            
+                 mov     eax, [rbp+var_4]   // Возвращаем флаг
+                 leave
+                 retn
+ ; } 
+ check_authentication endp
+
+//  Проанализировав код программы, и в частности, код функции check_authentication, 
+//  можно сделать следующие выводы:
+
+//  Чтобы получить доступ необходимо перезаписать значение флага.
+
+//  32 - 4 = 28 -> начало флага аутентификации. 
+//  Для этого нам потребуется ввести 28 байт + 1..4 байт. (всего от 29 до 32 символов)
+
+//  При вводе пароля такой длинны не имеет значение совпадает введенный пароль с правильным или нет, тк
+//  мы переписали значение флага, это происходит из-за того, что в функции strcpy нет проверки на границы.
+
+//  Пример:
+/*
+
+tolik@tolik-MS-7916:~/Рабочий стол/RETasks-master/BufferOverflow$ ./auth_overflow pppppppppppppppppppppppppppp
+
+Access Denied.
+tolik@tolik-MS-7916:~/Рабочий стол/RETasks-master/BufferOverflow$ ./auth_overflow pppppppppppppppppppppppppppp1
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-
+      Access Granted.
+-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+*/
+
+
+// auth_overflow2
+
+                public check_authentication
+ check_authentication proc near     
+
+ s1              = byte ptr -10h
+
+ ; __unwind {
+                 push    rbp
+                 mov     rbp, rsp
+                 sub     rsp, 10h
+                 lea     rax, [rbp+s1]
+                 mov     rsi, rax
+                 lea     rdi, aS         ; "%s"
+                 mov     eax, 0
+                 call    ___isoc99_scanf
+                 lea     rax, [rbp+s1]
+                 lea     rsi, s2         ; "brillig"
+                 mov     rdi, rax        ; s1
+                 call    _strcmp
+                 test    eax, eax
+                 jnz     short loc_400610
+                 mov     eax, 1
+                 jmp     short locret_400633
+
+
+                 public granted
+ granted         proc near               
+ ; __unwind {
+                 push    rbp
+                 mov     rbp, rsp
+                 lea     rdi, s          ; "\n-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+                 call    _puts
+                 lea     rdi, aAccessGranted ; "      Access Granted."
+                 call    _puts
+                 lea     rdi, asc_400737 ; "-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+                 call    _puts
+                 nop
+                 pop     rbp
+                 retn
+
+Проанализировав код программы можно выделить две функции check_authentication и granted
+
+На стеке можно выделить переменную в ячейке rbp со смещением 10h. Она соответствует
+переменной password_buffer, так как ее адрес загружается в rsi перед вызовом
+___isoc99_scanf.
+
+Взломать программу можно переписав адрес возврата, т.к. ___isoc99_scanf не проверяет на границы.
+
+      password_buffer (16 байт)
+      базовый указатель вызвавшей функции (8 байт) 
+      адрес возврата (8 байт) - его  и нужно будет перезаписать, на адрес функции granted
+
+Соответсвенно, чтобы переписать адрес возврата необходимо:
+      
+      16 + 8 = 20 (байт) + адрес возврата 
+
+В моем случае адрес ф-ии granted \xA7\x05\x40\x00\x00\x00\x00\x00 (Порядок от младшего к старшему)
+
+Команда, которую мы получили:
+
+perl -e 'print "aaaaaaaaaabbbbbbbbbbcccc" . "\xA7\x05\x40\x00\x00\x00\x00\x00"' | ./auth_overflow2
+
+
+ Пример: 
+
+tolik@tolik-MS-7916:~/Рабочий стол/RETasks-master/BufferOverflow$ ./auth_overflow2
+password
+
+Access Denied.
+
+
+tolik@tolik-MS-7916:~/Рабочий стол/RETasks-master/BufferOverflow$ perl -e 'print "aaaaaaaaaabbbbbbbbbbcccc" . "\xA7\x05\x40\x00\x00\x00\x00\x00"' | ./auth_overflow2
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-
+      Access Granted.
+-=-=-=-=-=-=-=-=-=-=-=-=-=-
