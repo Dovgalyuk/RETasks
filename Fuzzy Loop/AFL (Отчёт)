@@ -1,0 +1,37 @@
+
+                 american fuzzy lop 2.57b (auth_overflow2_afl)
+
+┌─ process timing ─────────────────────────────────────┬─ overall results ─────┐
+│        run time : 0 days, 0 hrs, 16 min, 22 sec      │  cycles done : 14.5k  │
+│   last new path : none yet (odd, check syntax!)      │  total paths : 1      │
+│ last uniq crash : 0 days, 0 hrs, 6 min, 22 sec       │ uniq crashes : 2      │
+│  last uniq hang : none seen yet                      │   uniq hangs : 0      │
+├─ cycle progress ────────────────────┬─ map coverage ─┴───────────────────────┤
+│  now processing : 0 (0.00%)         │    map density : 0.01% / 0.01%         │
+│ paths timed out : 0 (0.00%)         │ count coverage : 1.00 bits/tuple       │
+├─ stage progress ────────────────────┼─ findings in depth ────────────────────┤
+│  now trying : havoc                 │ favored paths : 1 (100.00%)            │
+│ stage execs : 152/256 (59.38%)      │  new edges on : 1 (100.00%)            │
+│ total execs : 3.72M                 │ total crashes : 359k (2 unique)        │
+│  exec speed : 3811/sec              │  total tmouts : 1 (1 unique)           │
+├─ fuzzing strategy yields ───────────┴───────────────┬─ path geometry ────────┤
+│   bit flips : 0/32, 0/31, 0/29                      │    levels : 1          │
+│  byte flips : 0/4, 0/3, 0/1                         │   pending : 0          │
+│ arithmetics : 0/224, 0/0, 0/0                       │  pend fav : 0          │
+│  known ints : 0/25, 0/84, 0/44                      │ own finds : 0          │
+│  dictionary : 0/0, 0/0, 0/0                         │  imported : n/a        │
+│       havoc : 2/3.72M, 0/0                          │ stability : 100.00%    │
+│        trim : 20.00%/1, 0.00%                       ├────────────────────────┘
+^C────────────────────────────────────────────────────┘          [cpu000:129%]
+
+Анализ ошибок
+
+Первые тестовые данные: 33$"\80\00\00\00\00\00\E8:2$"\00\00\00\AD<Q3<3"$"\00\00\00\AD<Q3<3"\FA\00\003\AF\AF\AF\AF\AF\AF\AF\AF\AF\AF\00O\FA\00\003\AF\AF\AF\AF\AF\AF\AF\AF\AF\AF\00\00
+
+В данном случае такие входные данные перезаписывают в стеке адрес возврата. Так как данный адрес возврата, которым перезаписали существующий в стеке, не существует, то происходит ошибка сегментации.
+
+Вторые тестовые данные были сформированы в объёме 48,3 КБ. Такие тестовые данные являются слишком объёмными, что также приводят к ошибке сегментации.
+
+Набор входных данных, сформированный при помощи AFL, находятся по следующему пути: RETasks/Fuzzy Loop/findings_dir/crashes/
+
+Исходный код исправленного калькулятора располагается по следующему пути: RETasks/Fuzzy Loop/Calculator/calc-master/src/
