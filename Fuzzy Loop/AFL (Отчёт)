@@ -34,4 +34,4 @@
 
 Набор входных данных, сформированный при помощи AFL, находятся по следующему пути: RETasks/Fuzzy Loop/findings_dir/crashes/
 
-Исходный код исправленного калькулятора располагается по следующему пути: RETasks/Fuzzy Loop/Calculator/calc-master/src/
+Исходный код исправленного калькулятора располагается по следующему пути: https://github.com/EvgeniiMendeleev/calc
