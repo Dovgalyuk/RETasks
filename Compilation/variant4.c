@@ -1,19 +1,19 @@
-unsigned int fd(unsigned int a)
+unsigned int f1(unsigned int a)
 {
     return a / 10;
 }
 
-unsigned int fd1(unsigned int a)
+unsigned int f2(unsigned int a)
 {
     return a / 16;
 }
 
-unsigned int fd2(unsigned int a, unsigned int b)
+unsigned int f3(unsigned int a, unsigned int b)
 {
     return a % b;
 }
 
-int f2(int a)
+int f4(int a)
 {
     switch (a)
     {
@@ -33,7 +33,7 @@ int f2(int a)
     return 0;
 }
 
-int f3(int a)
+int f5(int a)
 {
     switch (a)
     {
@@ -53,19 +53,19 @@ int f3(int a)
     return 0;
 }
 
-int if2(int a)
+int f6(int a)
 {
     int b = a == 50 ? 12 : 26;
     return b;
 }
-int if3(int a, int b, int c)
+int f7(int a, int b, int c)
 {
     if (a && c)
         return b;
     else
         return c;
 }
-int if4(int a, int b, int c)
+int f8(int a, int b, int c)
 {
     if (a || c == b)
         return b;
@@ -75,7 +75,7 @@ int if4(int a, int b, int c)
 
 int *s[100];
 int t[100];
-void f2()
+void f9()
 {
     for (int i = 0 ; i != 100 ; ++i)
         s[i] = &t[i];
@@ -83,7 +83,7 @@ void f2()
 
 void g();
 
-void f1(int a)
+void f10(int a)
 {
     while (a)
     {
@@ -92,7 +92,7 @@ void f1(int a)
     }
 }
 
-void f2(int a)
+void f11(int a)
 {
 L:
     if (a)
@@ -103,7 +103,7 @@ L:
     }
 }
 
-void f4(int a)
+void f12(int a)
 {
     do
     {
