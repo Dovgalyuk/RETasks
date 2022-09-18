@@ -1,3 +1,7 @@
+# 0 "variant4.c"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "variant4.c"
 unsigned int fd(unsigned int a)
 {
     return a / 10;
