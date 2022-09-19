@@ -1,10 +1,9 @@
 # Ссылки для изучения
 
-https://www.nand2tetris.org/
-
-https://habr.com/ru/post/183376/
-
-https://habr.com/ru/post/266591/
+* [From NAND to Tetris](https://www.nand2tetris.org/)
+* [Разбираемся в С, изучая ассемблер](https://habr.com/ru/post/183376/)
+* [Как устроены дыры в безопасности: переполнение буфера](https://habr.com/ru/post/266591/)
+* [Список ресурсов для изучения Ассемблера](https://habr.com/ru/post/131971/)
 
 # Практические задания
 
