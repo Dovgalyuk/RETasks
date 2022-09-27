@@ -6,6 +6,7 @@
 	.seh_proc	_Z2fdj
 _Z2fdj:
 .LFB0: #переменные хранятся в регистрах eax, edx, ecx
+#переменная а в регистре ecx
 	.seh_endprologue
 	movl	$3435973837, %edx
 	movl	%ecx, %eax
@@ -18,6 +19,7 @@ _Z2fdj:
 	.def	_Z3fd1j;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z3fd1j
 _Z3fd1j: #переменные хранятся в регистрах eax, ecx
+#переменная а в регистре ecx
 .LFB1:
 	.seh_endprologue
 	movl	%ecx, %eax
@@ -29,6 +31,8 @@ _Z3fd1j: #переменные хранятся в регистрах eax, ecx
 	.def	_Z3fd2jj;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z3fd2jj
 _Z3fd2jj: #переменные хранятся в регистрах eax, edx, ecx
+#переменная а в регистре ecx
+#переменная c в регистре edx
 .LFB2:
 	.seh_endprologue
 	movl	%edx, %r9d
@@ -43,6 +47,7 @@ _Z3fd2jj: #переменные хранятся в регистрах eax, edx, ecx
 	.def	_Z2f2i;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z2f2i
 _Z2f2i: #переменные хранятся в регистрах eax, ecx
+#переменная а в регистре ecx
 .LFB3:
 	.seh_endprologue
 	cmpl	$1000, %ecx
@@ -85,7 +90,8 @@ _Z2f2i: #переменные хранятся в регистрах eax, ecx
 	.globl	_Z2f3i
 	.def	_Z2f3i;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z2f3i
-_Z2f3i: #переменные хранятся в регистрах eax, ecx
+_Z2f3i: #переменные хранятся в регистрах eax, 
+#переменная а в регистре ecx
 .LFB4:
 	.seh_endprologue
 	xorl	%eax, %eax
@@ -102,6 +108,7 @@ _Z2f3i: #переменные хранятся в регистрах eax, ecx
 	.def	_Z3if2i;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z3if2i
 _Z3if2i: #переменные хранятся в регистрах eax, edx, ecx
+#переменная a в регистре edx
 .LFB5:
 	.seh_endprologue
 	movl	$26, %edx
@@ -115,6 +122,8 @@ _Z3if2i: #переменные хранятся в регистрах eax, edx, ecx
 	.def	_Z3if3iii;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z3if3iii
 _Z3if3iii: #переменные хранятся в регистрах eax, edx, ecx
+#переменная а в регистре ecx
+#переменная b в регистре edx
 .LFB6:
 	.seh_endprologue
 	testl	%ecx, %ecx
@@ -134,6 +143,7 @@ _Z3if3iii: #переменные хранятся в регистрах eax, edx, ecx
 	.def	_Z3if4iii;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z3if4iii
 _Z3if4iii: #переменные хранятся в регистрах eax, edx, ecx
+#переменная а в регистре edx
 .LFB7:
 	.seh_endprologue
 	testl	%ecx, %ecx
@@ -173,6 +183,7 @@ _Z2f2v: #переменных нет
 	.def	_Z2f1i;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z2f1i
 _Z2f1i: #переменные хранятся в регистрах ecx
+#переменная а в регистре ecx
 .LFB9:
 	pushq	%rbx
 	.seh_pushreg	%rbx
@@ -199,6 +210,7 @@ _Z2f1i: #переменные хранятся в регистрах ecx
 	.def	_Z3f22i;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z3f22i
 _Z3f22i: #переменные хранятся в регистрах ecx
+#переменная а в регистре ecx
 .LFB10:
 	pushq	%rbx
 	.seh_pushreg	%rbx
@@ -225,6 +237,7 @@ _Z3f22i: #переменные хранятся в регистрах ecx
 	.def	_Z2f4i;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z2f4i
 _Z2f4i: #переменные хранятся в регистрах ecx
+#переменная а в регистре ecx
 .LFB11:
 	pushq	%rbx
 	.seh_pushreg	%rbx
