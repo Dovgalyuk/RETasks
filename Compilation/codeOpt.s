@@ -32,7 +32,7 @@ _Z3fd1j: #переменные хранятся в регистрах eax, ecx
 	.seh_proc	_Z3fd2jj
 _Z3fd2jj: #переменные хранятся в регистрах eax, edx, ecx
 #переменная а в регистре ecx
-#переменная c в регистре edx
+#переменная b в регистре edx
 .LFB2:
 	.seh_endprologue
 	movl	%edx, %r9d
@@ -121,9 +121,10 @@ _Z3if2i: #переменные хранятся в регистрах eax, edx, ecx
 	.globl	_Z3if3iii
 	.def	_Z3if3iii;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z3if3iii
-_Z3if3iii: #переменные хранятся в регистрах eax, edx, ecx
+_Z3if3iii: #переменные хранятся в регистрах r8d, edx, ecx
 #переменная а в регистре ecx
 #переменная b в регистре edx
+#переменная c в регистре r8d
 .LFB6:
 	.seh_endprologue
 	testl	%ecx, %ecx

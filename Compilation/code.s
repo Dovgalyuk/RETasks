@@ -211,9 +211,10 @@ _Z3if2i:#переменные хранятся в регистрах eax, ecx
 	.globl	_Z3if3iii
 	.def	_Z3if3iii;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z3if3iii
-_Z3if3iii:#переменные хранятся в регистрах eax, edx, ecx
+_Z3if3iii:#переменные хранятся в регистрах eax, edx, r8d
 #переменная а в регистре ecx
-#переменная c в регистре edx
+#переменная b в регистре edx
+#переменная c в регистре r8d
 .LFB6:
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -238,9 +239,10 @@ _Z3if3iii:#переменные хранятся в регистрах eax, edx,
 	.globl	_Z3if4iii
 	.def	_Z3if4iii;	.scl	2;	.type	32;	.endef
 	.seh_proc	_Z3if4iii
-_Z3if4iii:#переменные хранятся в регистрах eax, edx, ecx
+_Z3if4iii:#переменные хранятся в регистрах eax, edx, r8d
 #переменная а в регистре ecx
-#переменная c в регистре edx
+#переменная b в регистре edx
+#переменная c в регистре r8d
 .LFB7:
 	pushq	%rbp
 	.seh_pushreg	%rbp
