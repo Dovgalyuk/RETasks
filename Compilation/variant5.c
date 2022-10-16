@@ -112,3 +112,5 @@ void f12(int *p)
         ++*p;
     }
 }
+
+int main(int argc, char** argv) {}
