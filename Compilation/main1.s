@@ -5,7 +5,8 @@
 	.seh_proc	f1
 f1:
 # Чтобы передать параметры функции используют стек и перед тем чтобы вызвать параметры используется команда pushq для помещения в этот стек.
-# ecx,edx и eax это регисторы где хранятся переменные.
+# ecx, edx и eax это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbp
 	.seh_pushreg	%rbp
 	movq	%rsp, %rbp
@@ -23,6 +24,8 @@ f1:
 	.def	f2;	.scl	2;	.type	32;	.endef
 	.seh_proc	f2
 f2:
+# ecx,edx и eax это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbp
 	.seh_pushreg	%rbp
 	movq	%rsp, %rbp
@@ -50,6 +53,8 @@ f2:
 	.def	f3;	.scl	2;	.type	32;	.endef
 	.seh_proc	f3
 f3:
+# ecx и eax это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbp
 	.seh_pushreg	%rbp
 	movq	%rsp, %rbp
@@ -67,6 +72,8 @@ f3:
 f4:
 # Здесь организовано ветвление на основе условного перехода, где в первую очередь выполняются такие команды как CMP, SUB или AND.
 # Эти команды работают с флагами процессора и после них идет условный переход по нужным местам.
+# ecx и eax это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbp
 	.seh_pushreg	%rbp
 	movq	%rsp, %rbp
@@ -102,6 +109,8 @@ f4:
 	.def	f5;	.scl	2;	.type	32;	.endef
 	.seh_proc	f5
 f5:
+# ecx и eax это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbp
 	.seh_pushreg	%rbp
 	movq	%rsp, %rbp
@@ -157,6 +166,8 @@ f5:
 	.def	f6;	.scl	2;	.type	32;	.endef
 	.seh_proc	f6
 f6:
+# ecx и eax это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbp
 	.seh_pushreg	%rbp
 	movq	%rsp, %rbp
@@ -182,6 +193,8 @@ f6:
 	.def	f7;	.scl	2;	.type	32;	.endef
 	.seh_proc	f7
 f7:
+# ecx и eax это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbp
 	.seh_pushreg	%rbp
 	movq	%rsp, %rbp
@@ -207,6 +220,10 @@ f7:
 	.def	f8;	.scl	2;	.type	32;	.endef
 	.seh_proc	f8
 f8:
+# ecx,edx и r8d это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
+# регистр edx =  переменной b
+# регистр r8d =  переменной c
 	pushq	%rbp
 	.seh_pushreg	%rbp
 	movq	%rsp, %rbp
@@ -243,6 +260,7 @@ t:
 	.def	f9;	.scl	2;	.type	32;	.endef
 	.seh_proc	f9
 f9:
+# eax это регисторы где хранятся переменные.
 	pushq	%rbp
 	.seh_pushreg	%rbp
 	movq	%rsp, %rbp
@@ -280,6 +298,8 @@ f10:
 # Для начала используется условный переход и регистр ecx, где выставляется количество циклов.
 # Далее указывается метка .L38:, в которой и выполняется цикл по уменьшению регистра ecx 
 # Далее идет сравнение цикла и если ecx не равняется нулю то идем дальше к метке, в другом случае идет выполнение тела цикла 
+# ecx это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbp
 	.seh_pushreg	%rbp
 	movq	%rsp, %rbp
@@ -305,6 +325,8 @@ f10:
 	.def	f11;	.scl	2;	.type	32;	.endef
 	.seh_proc	f11
 f11:
+# ecx это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbp
 	.seh_pushreg	%rbp
 	movq	%rsp, %rbp
@@ -329,6 +351,8 @@ f11:
 	.def	f12;	.scl	2;	.type	32;	.endef
 	.seh_proc	f12
 f12:
+# ecx это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbp
 	.seh_pushreg	%rbp
 	movq	%rsp, %rbp
