@@ -5,6 +5,8 @@
 	.def	f1;	.scl	2;	.type	32;	.endef
 	.seh_proc	f1
 f1:
+# ecx, edx и eax это регисторы где хранятся переменные.
+# регистр ecx=  переменной a
 	.seh_endprologue
 	movl	%ecx, %eax
 	movl	%edx, %ecx
@@ -17,6 +19,8 @@ f1:
 	.def	f2;	.scl	2;	.type	32;	.endef
 	.seh_proc	f2
 f2:
+# ecx, edx и eax это регисторы где хранятся переменные.
+# регистр ecx=  переменной a
 	.seh_endprologue
 	movl	$3435973837, %edx
 	movl	%ecx, %eax
@@ -33,6 +37,8 @@ f2:
 	.def	f3;	.scl	2;	.type	32;	.endef
 	.seh_proc	f3
 f3:
+# ecx и eax это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	.seh_endprologue
 	movl	%ecx, %eax
 	andl	$15, %eax
@@ -43,6 +49,8 @@ f3:
 	.def	f4;	.scl	2;	.type	32;	.endef
 	.seh_proc	f4
 f4:
+# ecx и eax это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	.seh_endprologue
 	xorl	%eax, %eax
 	subl	$1, %ecx
@@ -51,6 +59,8 @@ f4:
 	leaq	CSWTCH.6(%rip), %rax
 	movl	(%rax,%rcx,4), %eax
 .L5:
+# В o0 было 5 меток, а в o2 используется одна метка
+# Тем самым оптимизированный код уменьшает количество кода и улучшает его производительность
 	ret
 	.seh_endproc
 	.p2align 4
@@ -58,6 +68,8 @@ f4:
 	.def	f5;	.scl	2;	.type	32;	.endef
 	.seh_proc	f5
 f5:
+# ecx и eax это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	.seh_endprologue
 	cmpl	$1000, %ecx
 	je	.L11
@@ -100,6 +112,8 @@ f5:
 	.def	f6;	.scl	2;	.type	32;	.endef
 	.seh_proc	f6
 f6:
+# ecx и eax это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	.seh_endprologue
 	movl	$1, %eax
 	cmpl	$1, %ecx
@@ -111,6 +125,8 @@ f6:
 	.def	f7;	.scl	2;	.type	32;	.endef
 	.seh_proc	f7
 f7:
+# ecx, edx и eax это регисторы где хранятся переменные.
+# регистр edx =  переменной a
 	.seh_endprologue
 	movl	$12, %edx
 	movl	$26, %eax
@@ -123,6 +139,8 @@ f7:
 	.def	f8;	.scl	2;	.type	32;	.endef
 	.seh_proc	f8
 f8:
+# ecx,edx и r8d это регисторы где хранятся переменные.
+# регистр edx = a
 	.seh_endprologue
 	testl	%ecx, %ecx
 	jne	.L30
@@ -141,6 +159,7 @@ f8:
 	.def	f9;	.scl	2;	.type	32;	.endef
 	.seh_proc	f9
 f9:
+# Отсутствуют переменные
 	.seh_endprologue
 	leaq	t(%rip), %rax
 	leaq	s(%rip), %rdx
@@ -160,6 +179,8 @@ f9:
 	.def	f10;	.scl	2;	.type	32;	.endef
 	.seh_proc	f10
 f10:
+# ecx это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbx
 	.seh_pushreg	%rbx
 	subq	$32, %rsp
@@ -185,6 +206,8 @@ f10:
 	.def	f11;	.scl	2;	.type	32;	.endef
 	.seh_proc	f11
 f11:
+# ecx это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbx
 	.seh_pushreg	%rbx
 	subq	$32, %rsp
@@ -210,6 +233,8 @@ f11:
 	.def	f12;	.scl	2;	.type	32;	.endef
 	.seh_proc	f12
 f12:
+# ecx это регисторы где хранятся переменные.
+# регистр ecx =  переменной a
 	pushq	%rbx
 	.seh_pushreg	%rbx
 	subq	$32, %rsp
