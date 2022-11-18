@@ -242,16 +242,15 @@ Disassembly of section .fini:
 
 
 
-
-
-
-
-
-
-
 root@student-VirtualBox:/home/student/Documents# ./auth_overflow 12345678901234567890123456789
 
 -=-=-=-=-=-=-=-=-=-=-=-=-=-
       Access Granted.
 -=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+
+При данной длинне строки происходит переполнение буфера, из-за этого переменная auth_flag изменяет свое значение, 
+благодаря чему мы получаем Access Granted.
+auth_flag находится по адресу -0х4(%rbp)
+Память выделенная под массив password_buffer находится по адресу -0x20(%rbp)
+Расстояние между auth_flag и password_buffer равно 28 байтам (32-4=28байт)
