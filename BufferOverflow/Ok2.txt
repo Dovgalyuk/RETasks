@@ -1,0 +1,243 @@
+auth_overflow2: file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+0000000000400460 <_init>:
+400460: 48 83 ec 08 sub $0x8,%rsp
+400464: 48 8b 05 8d 0b 20 00 mov 0x200b8d(%rip),%rax # 600ff8 <__gmon_start__>
+40046b: 48 85 c0 test %rax,%rax
+40046e: 74 02 je 400472 <_init+0x12>
+400470: ff d0 call *%rax
+400472: 48 83 c4 08 add $0x8,%rsp
+400476: c3 ret
+
+Disassembly of section .plt:
+
+0000000000400480 <.plt>:
+400480: ff 35 82 0b 20 00 push 0x200b82(%rip) # 601008 <_GLOBAL_OFFSET_TABLE_+0x8>
+400486: ff 25 84 0b 20 00 jmp *0x200b84(%rip) # 601010 <_GLOBAL_OFFSET_TABLE_+0x10>
+40048c: 0f 1f 40 00 nopl 0x0(%rax)
+
+0000000000400490 <puts@plt>:
+400490: ff 25 82 0b 20 00 jmp *0x200b82(%rip) # 601018 <puts@GLIBC_2.2.5>
+400496: 68 00 00 00 00 push $0x0
+40049b: e9 e0 ff ff ff jmp 400480 <.plt>
+
+00000000004004a0 <strcmp@plt>:
+4004a0: ff 25 7a 0b 20 00 jmp *0x200b7a(%rip) # 601020 <strcmp@GLIBC_2.2.5>
+4004a6: 68 01 00 00 00 push $0x1
+4004ab: e9 d0 ff ff ff jmp 400480 <.plt>
+
+00000000004004b0 <__isoc99_scanf@plt>:
+4004b0: ff 25 72 0b 20 00 jmp *0x200b72(%rip) # 601028 <__isoc99_scanf@GLIBC_2.7>
+4004b6: 68 02 00 00 00 push $0x2
+4004bb: e9 c0 ff ff ff jmp 400480 <.plt>
+
+Disassembly of section .text:
+
+00000000004004c0 <_start>:
+4004c0: 31 ed xor %ebp,%ebp
+4004c2: 49 89 d1 mov %rdx,%r9
+4004c5: 5e pop %rsi
+4004c6: 48 89 e2 mov %rsp,%rdx
+4004c9: 48 83 e4 f0 and $0xfffffffffffffff0,%rsp
+4004cd: 50 push %rax
+4004ce: 54 push %rsp
+4004cf: 49 c7 c0 f0 06 40 00 mov $0x4006f0,%r8
+4004d6: 48 c7 c1 80 06 40 00 mov $0x400680,%rcx
+4004dd: 48 c7 c7 35 06 40 00 mov $0x400635,%rdi
+4004e4: ff 15 06 0b 20 00 call *0x200b06(%rip) # 600ff0 <__libc_start_main@GLIBC_2.2.5>
+4004ea: f4 hlt
+4004eb: 0f 1f 44 00 00 nopl 0x0(%rax,%rax,1)
+
+00000000004004f0 <_dl_relocate_static_pie>:
+4004f0: f3 c3 repz ret
+4004f2: 66 2e 0f 1f 84 00 00 cs nopw 0x0(%rax,%rax,1)
+4004f9: 00 00 00
+4004fc: 0f 1f 40 00 nopl 0x0(%rax)
+
+0000000000400500 <deregister_tm_clones>:
+400500: 55 push %rbp
+400501: b8 40 10 60 00 mov $0x601040,%eax
+400506: 48 3d 40 10 60 00 cmp $0x601040,%rax
+40050c: 48 89 e5 mov %rsp,%rbp
+40050f: 74 17 je 400528 <deregister_tm_clones+0x28>
+400511: b8 00 00 00 00 mov $0x0,%eax
+400516: 48 85 c0 test %rax,%rax
+400519: 74 0d je 400528 <deregister_tm_clones+0x28>
+40051b: 5d pop %rbp
+40051c: bf 40 10 60 00 mov $0x601040,%edi
+400521: ff e0 jmp *%rax
+400523: 0f 1f 44 00 00 nopl 0x0(%rax,%rax,1)
+400528: 5d pop %rbp
+400529: c3 ret
+40052a: 66 0f 1f 44 00 00 nopw 0x0(%rax,%rax,1)
+
+0000000000400530 <register_tm_clones>:
+400530: be 40 10 60 00 mov $0x601040,%esi
+400535: 55 push %rbp
+400536: 48 81 ee 40 10 60 00 sub $0x601040,%rsi
+40053d: 48 89 e5 mov %rsp,%rbp
+400540: 48 c1 fe 03 sar $0x3,%rsi
+400544: 48 89 f0 mov %rsi,%rax
+400547: 48 c1 e8 3f shr $0x3f,%rax
+40054b: 48 01 c6 add %rax,%rsi
+40054e: 48 d1 fe sar %rsi
+400551: 74 15 je 400568 <register_tm_clones+0x38>
+400553: b8 00 00 00 00 mov $0x0,%eax
+400558: 48 85 c0 test %rax,%rax
+40055b: 74 0b je 400568 <register_tm_clones+0x38>
+40055d: 5d pop %rbp
+40055e: bf 40 10 60 00 mov $0x601040,%edi
+400563: ff e0 jmp *%rax
+400565: 0f 1f 00 nopl (%rax)
+400568: 5d pop %rbp
+400569: c3 ret
+40056a: 66 0f 1f 44 00 00 nopw 0x0(%rax,%rax,1)
+
+0000000000400570 <__do_global_dtors_aux>:
+400570: 80 3d c9 0a 20 00 00 cmpb $0x0,0x200ac9(%rip) # 601040 <__TMC_END__>
+400577: 75 17 jne 400590 <__do_global_dtors_aux+0x20>
+400579: 55 push %rbp
+40057a: 48 89 e5 mov %rsp,%rbp
+40057d: e8 7e ff ff ff call 400500 <deregister_tm_clones>
+400582: c6 05 b7 0a 20 00 01 movb $0x1,0x200ab7(%rip) # 601040 <__TMC_END__>
+400589: 5d pop %rbp
+40058a: c3 ret
+40058b: 0f 1f 44 00 00 nopl 0x0(%rax,%rax,1)
+400590: f3 c3 repz ret
+400592: 0f 1f 40 00 nopl 0x0(%rax)
+400596: 66 2e 0f 1f 84 00 00 cs nopw 0x0(%rax,%rax,1)
+40059d: 00 00 00
+
+00000000004005a0 <frame_dummy>:
+4005a0: 55 push %rbp
+4005a1: 48 89 e5
+mov %rsp,%rbp
+4005a4: 5d pop %rbp
+4005a5: eb 89 jmp 400530 <register_tm_clones>
+
+00000000004005a7 <granted>:
+4005a7: 55 push %rbp
+4005a8: 48 89 e5 mov %rsp,%rbp
+4005ab: 48 8d 3d 52 01 00 00 lea 0x152(%rip),%rdi # 400704 <_IO_stdin_used+0x4>
+4005b2: e8 d9 fe ff ff call 400490 <puts@plt>
+4005b7: 48 8d 3d 63 01 00 00 lea 0x163(%rip),%rdi # 400721 <_IO_stdin_used+0x21>
+4005be: e8 cd fe ff ff call 400490 <puts@plt>
+4005c3: 48 8d 3d 6d 01 00 00 lea 0x16d(%rip),%rdi # 400737 <_IO_stdin_used+0x37>
+4005ca: e8 c1 fe ff ff call 400490 <puts@plt>
+4005cf: 90 nop
+4005d0: 5d pop %rbp
+4005d1: c3 ret
+
+00000000004005d2 <check_authentication>:
+4005d2: 55 push %rbp
+4005d3: 48 89 e5 mov %rsp,%rbp
+4005d6: 48 83 ec 10 sub $0x10,%rsp
+4005da: 48 8d 45 f0 lea -0x10(%rbp),%rax
+4005de: 48 89 c6 mov %rax,%rsi
+4005e1: 48 8d 3d 6b 01 00 00 lea 0x16b(%rip),%rdi # 400753 <_IO_stdin_used+0x53>
+4005e8: b8 00 00 00 00 mov $0x0,%eax
+4005ed: e8 be fe ff ff call 4004b0 <__isoc99_scanf@plt>
+4005f2: 48 8d 45 f0 lea -0x10(%rbp),%rax
+4005f6: 48 8d 35 59 01 00 00 lea 0x159(%rip),%rsi # 400756 <_IO_stdin_used+0x56>
+4005fd: 48 89 c7 mov %rax,%rdi
+400600: e8 9b fe ff ff call 4004a0 <strcmp@plt>
+400605: 85 c0 test %eax,%eax
+400607: 75 07 jne 400610 <check_authentication+0x3e>
+400609: b8 01 00 00 00 mov $0x1,%eax
+40060e: eb 23 jmp 400633 <check_authentication+0x61>
+400610: 48 8d 45 f0 lea -0x10(%rbp),%rax
+400614: 48 8d 35 43 01 00 00 lea 0x143(%rip),%rsi # 40075e <_IO_stdin_used+0x5e>
+40061b: 48 89 c7 mov %rax,%rdi
+40061e: e8 7d fe ff ff call 4004a0 <strcmp@plt>
+400623: 85 c0 test %eax,%eax
+400625: 75 07 jne 40062e <check_authentication+0x5c>
+400627: b8 01 00 00 00 mov $0x1,%eax
+40062c: eb 05 jmp 400633 <check_authentication+0x61>
+40062e: b8 00 00 00 00 mov $0x0,%eax
+400633: c9 leave
+400634: c3 ret
+
+0000000000400635 <main>:
+400635: 55 push %rbp
+400636: 48 89 e5 mov %rsp,%rbp
+400639: 48 83 ec 10 sub $0x10,%rsp
+40063d: 89 7d fc mov %edi,-0x4(%rbp)
+400640: 48 89 75 f0 mov %rsi,-0x10(%rbp)
+400644: b8 00 00 00 00 mov $0x0,%eax
+400649: e8 84 ff ff ff call 4005d2 <check_authentication>
+40064e: 85 c0 test %eax,%eax
+400650: 74 0c je 40065e <main+0x29>
+400652: b8 00 00 00 00 mov $0x0,%eax
+400657: e8 4b ff ff ff call 4005a7 <granted>
+40065c: eb 0c jmp 40066a <main+0x35>
+40065e: 48 8d 3d 02 01 00 00 lea 0x102(%rip),%rdi # 400767 <_IO_stdin_used+0x67>
+400665: e8 26 fe ff ff call 400490 <puts@plt>
+40066a: b8 00 00 00 00 mov $0x0,%eax
+40066f: c9 leave
+400670: c3 ret
+400671: 66 2e 0f 1f 84 00 00 cs nopw 0x0(%rax,%rax,1)
+400678: 00 00 00
+40067b: 0f 1f 44 00 00 nopl 0x0(%rax,%rax,1)
+
+0000000000400680 <__libc_csu_init>:
+400680: 41 57 push %r15
+400682: 41 56 push %r14
+400684: 49 89 d7 mov %rdx,%r15
+400687: 41 55 push %r13
+400689: 41 54 push %r12
+40068b: 4c 8d 25 7e 07 20 00 lea 0x20077e(%rip),%r12 # 600e10 <__frame_dummy_init_array_entry>
+400692: 55 push %rbp
+400693: 48 8d 2d 7e 07 20 00 lea 0x20077e(%rip),%rbp # 600e18 <__do_global_dtors_aux_fini_array_entry>
+40069a: 53 push %rbx
+40069b: 41 89 fd mov %edi,%r13d
+40069e: 49 89 f6 mov %rsi,%r14
+4006a1: 4c 29 e5 sub %r12,%rbp
+4006a4: 48 83 ec 08 sub $0x8,%rsp
+4006a8: 48 c1 fd 03 sar $0x3,%rbp
+4006ac: e8 af fd ff ff call 400460 <_init>
+4006b1: 48 85 ed test %rbp,%rbp
+4006b4: 74 20 je 4006d6 <__libc_csu_init+0x56>
+4006b6: 31 db xor %ebx,%ebx
+4006b8: 0f 1f 84 00 00 00 00 nopl 0x0(%rax,%rax,1)
+4006bf: 00
+4006c0: 4c 89 fa mov %r15,%rdx
+4006c3: 4c 89 f6 mov %r14,%rsi
+4006c6: 44 89 ef mov %r13d,%edi
+4006c9: 41 ff 14 dc call *(%r12,%rbx,8)
+4006cd: 48 83 c3 01 add $0x1,%rbx
+4006d1: 48 39 dd cmp %rbx,%rbp
+4006d4: 75 ea jne 4006c0 <__libc_csu_init+0x40>
+4006d6: 48 83 c4 08 add $0x8,%rsp
+4006da: 5b pop %rbx
+4006db: 5d pop %rbp
+4006dc: 41 5c pop %r12
+4006de: 41 5d pop %r13
+4006e0: 41 5e pop %r14
+4006e2: 41 5f pop %r15
+4006e4: c3 ret
+4006e5: 90 nop
+4006e6: 66 2e
+0f 1f 84 00 00 cs nopw 0x0(%rax,%rax,1)
+4006ed: 00 00 00
+
+00000000004006f0 <__libc_csu_fini>:
+4006f0: f3 c3 repz ret
+
+Disassembly of section .fini:
+
+00000000004006f4 <_fini>:
+4006f4: 48 83 ec 08 sub $0x8,%rsp
+4006f8: 48 83 c4 08 add $0x8,%rsp
+4006fc: c3 ret
+
+
+Мы можем перезаписать элемент стека, который хранится в себе адрес возврата на инструкцию после вызова функции check_authentication()
+Вписываем адрес функции granted() в память для того, чтобы перенаправить исполнение кода для получения прав, которые диктуются программой
+Так как я использовал 64 разрядный процессор, то длинна машинного слова равна 8 байтам
+Для массива password_buffer выделено 16 байт (sub $0x10, %rsp)
+16 байт для записи символов в массив password_buffer + 8 байт чтобы заменить старый адрес регистра %rbp, в итоге получаю 24 байта
+Начиная с 25 байта необходимо вписать 00000000004005a7 - адрес функции granted() 
+Пример работы приведен на скриншоте scr2
