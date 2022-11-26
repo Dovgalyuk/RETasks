@@ -1,0 +1,154 @@
+1 Задние
+
+┌─ process timing ─────────────────────────────────────┬─ overall results ─────┐
+│        run time : 0 days, 1 hrs, 26 min, 15 sec      │  cycles done : 119k   │
+│   last new path : none yet (odd, check syntax!)      │  total paths : 1      │
+│ last uniq crash : 0 days, 1 hrs, 16 min, 15 sec      │ uniq crashes : 2      │
+│  last uniq hang : none seen yet                      │   uniq hangs : 0      │
+├─ cycle progress ────────────────────┬─ map coverage ─┴───────────────────────┤
+│  now processing : 0 (0.00%)         │    map density : 0.01% / 0.01%         │
+│ paths timed out : 0 (0.00%)         │ count coverage : 1.00 bits/tuple       │
+├─ stage progress ────────────────────┼─ findings in depth ────────────────────┤
+│  now trying : havoc                 │ favored paths : 1 (100.00%)            │
+│ stage execs : 111/256 (43.36%)      │  new edges on : 1 (100.00%)            │
+│ total execs : 30.5M                 │ total crashes : 4.65M (2 unique)       │
+│  exec speed : 5588/sec              │  total tmouts : 2 (1 unique)           │
+├─ fuzzing strategy yields ───────────┴───────────────┬─ path geometry ────────┤
+│   bit flips : 0/32, 0/31, 0/29                      │    levels : 1          │
+│  byte flips : 0/4, 0/3, 0/1                         │   pending : 0          │
+│ arithmetics : 0/224, 0/0, 0/0                       │  pend fav : 0          │
+│  known ints : 0/25, 0/84, 0/44                      │ own finds : 0          │
+│  dictionary : 0/0, 0/0, 0/0                         │  imported : n/a        │
+│       havoc : 2/30.5M, 0/0                          │ stability : 100.00%    │
+│        trim : 20.00%/1, 0.00%                       ├────────────────────────┘
+──────────────────────────────────────────────────────┘          [cpu000: 57%]
+
+Проблема во входной строке:
+
+hppppppppJpppppppppJppppp
+
+Первый сбой случается при изменении адреса возврата, так же как и в лабороторной BufferOverflow.
+Данная строка приведет к ошибке сегментирования
+
+Второй сбой вызвала строка из сиволов , которые повторяются 30375 раз, она так же ведет к ошибке сегментирования.
+
+2 задание
+
+https://github.com/Saorykun/calc
+
+┌─ process timing ─────────────────────────────────────┬─ overall results ─────┐
+│        run time : 0 days, 0 hrs, 2 min, 32 sec       │  cycles done : 2      │
+│   last new path : 0 days, 0 hrs, 0 min, 9 sec        │  total paths : 212    │
+│ last uniq crash : 0 days, 0 hrs, 1 min, 18 sec       │ uniq crashes : 27     │
+│  last uniq hang : none seen yet                      │   uniq hangs : 0      │
+├─ cycle progress ────────────────────┬─ map coverage ─┴───────────────────────┤
+│  now processing : 210* (99.06%)     │    map density : 0.13% / 0.29%         │
+│ paths timed out : 0 (0.00%)         │ count coverage : 5.53 bits/tuple       │
+├─ stage progress ────────────────────┼─ findings in depth ────────────────────┤
+│  now trying : interest 32/8         │ favored paths : 22 (10.38%)            │
+│ stage execs : 285/6686 (4.26%)      │  new edges on : 39 (18.40%)            │
+│ total execs : 762k                  │ total crashes : 22.2k (27 unique)      │
+│  exec speed : 4756/sec              │  total tmouts : 0 (0 unique)           │
+├─ fuzzing strategy yields ───────────┴───────────────┬─ path geometry ────────┤
+│   bit flips : 16/21.1k, 14/21.0k, 3/20.8k           │    levels : 6          │
+│  byte flips : 0/2634, 2/2369, 2/2177                │   pending : 108        │
+│ arithmetics : 24/137k, 0/15.8k, 0/1193              │  pend fav : 0          │
+│  known ints : 5/14.2k, 0/65.2k, 0/89.8k             │ own finds : 211        │
+│  dictionary : 0/0, 0/0, 0/2889                      │  imported : n/a        │
+│       havoc : 172/363k, 0/0                         │ stability : 100.00%    │
+│        trim : 6.40%/748, 5.75%                      ├────────────────────────┘
+──────────────────────────────────────────────────────┘          [cpu000: 41%]
+
+Первая и основная проблема связана со скобками, например: 123)345
+Добавляем проверки в цикл:
+else if (*str == ')') {
+			if (currentScope->parent == NULL || !currentScope->first){
+				exit(1);
+
+			}
+			if (!strcmp (currentScope->first->type, OP)){
+				exit(1);
+			}
+			insertToken(currentScope, NUM, '\0', evaluateScope(currentScope, &currentScope));
+			str++;
+
+┌─ process timing ─────────────────────────────────────┬─ overall results ─────┐
+│        run time : 0 days, 0 hrs, 3 min, 5 sec        │  cycles done : 4      │
+│   last new path : 0 days, 0 hrs, 0 min, 9 sec        │  total paths : 207    │
+│ last uniq crash : 0 days, 0 hrs, 3 min, 5 sec        │ uniq crashes : 2      │
+│  last uniq hang : none seen yet                      │   uniq hangs : 0      │
+├─ cycle progress ────────────────────┬─ map coverage ─┴───────────────────────┤
+│  now processing : 103* (49.76%)     │    map density : 0.10% / 0.28%         │
+│ paths timed out : 0 (0.00%)         │ count coverage : 5.08 bits/tuple       │
+├─ stage progress ────────────────────┼─ findings in depth ────────────────────┤
+│  now trying : interest 8/8          │ favored paths : 25 (12.08%)            │
+│ stage execs : 99/321 (30.84%)       │  new edges on : 38 (18.36%)            │
+│ total execs : 918k                  │ total crashes : 15.4k (2 unique)       │
+│  exec speed : 4982/sec              │  total tmouts : 0 (0 unique)           │
+├─ fuzzing strategy yields ───────────┴───────────────┬─ path geometry ────────┤
+│   bit flips : 16/25.8k, 7/25.7k, 5/25.4k            │    levels : 6          │
+│  byte flips : 0/3223, 2/2901, 2/2660                │   pending : 78         │
+│ arithmetics : 14/168k, 0/18.8k, 0/665               │  pend fav : 0          │
+│  known ints : 5/17.2k, 0/79.2k, 0/115k              │ own finds : 206        │
+│  dictionary : 0/0, 0/0, 0/4346                      │  imported : n/a        │
+│       havoc : 157/426k, 0/0                         │ stability : 100.00%    │
+│        trim : 11.12%/959, 5.63%                     ├────────────────────────┘
+──────────────────────────────────────────────────────┘          [cpu000: 50%]
+
+Первой ошибка - неизвестный символ: ÿ23+345 
+Это связано с тем, что программа считывает символ как операцию, 
+решить эту ошибку можно добавлением новых условий в функцию normalise 
+
+char normalise(char operator)
+{
+    switch (operator) {
+            case 'x':
+            case '*':
+                return '*';
+            case '\'':
+            case '^':
+                return '^';
+            case '+':
+                return operator;
+            case '-':
+                return operator;
+            case '/':
+                return operator;
+            default:
+                exit(1);
+        }
+}
+
+Второй ошибка - ввод пустой строки, 
+решением является дополнительная проверка:
+
+/* Tokenise */
+	str = input.str;
+	if (!str) {
+        exit(1);
+	}
+
+за 25 минут работы не было выявлено уникальных ошибок
+
+┌─ process timing ─────────────────────────────────────┬─ overall results ─────┐
+│        run time : 0 days, 0 hrs, 25 min, 1 sec       │  cycles done : 59     │
+│   last new path : 0 days, 0 hrs, 1 min, 12 sec       │  total paths : 245    │
+│ last uniq crash : none seen yet                      │ uniq crashes : 0      │
+│  last uniq hang : none seen yet                      │   uniq hangs : 0      │
+├─ cycle progress ────────────────────┬─ map coverage ─┴───────────────────────┤
+│  now processing : 244* (99.59%)     │    map density : 0.16% / 0.29%         │
+│ paths timed out : 0 (0.00%)         │ count coverage : 5.69 bits/tuple       │
+├─ stage progress ────────────────────┼─ findings in depth ────────────────────┤
+│  now trying : arith 8/8             │ favored paths : 26 (10.61%)            │
+│ stage execs : 62.4k/217k (28.66%)   │  new edges on : 40 (16.33%)            │
+│ total execs : 7.15M                 │ total crashes : 0 (0 unique)           │
+│  exec speed : 3231/sec              │  total tmouts : 2 (2 unique)           │
+├─ fuzzing strategy yields ───────────┴───────────────┬─ path geometry ────────┤
+│   bit flips : 18/219k, 7/219k, 3/218k               │    levels : 13         │
+│  byte flips : 0/27.4k, 0/24.3k, 0/23.9k             │   pending : 2          │
+│ arithmetics : 21/1.18M, 0/142k, 0/2139              │  pend fav : 0          │
+│  known ints : 5/120k, 0/585k, 0/903k                │ own finds : 244        │
+│  dictionary : 0/0, 0/0, 0/40.1k                     │  imported : n/a        │
+│       havoc : 183/2.22M, 7/1.15M                    │ stability : 100.00%    │
+│        trim : 11.53%/12.2k, 10.12%                  ├────────────────────────┘
+──────────────────────────────────────────────────────┘          [cpu000: 47%]
