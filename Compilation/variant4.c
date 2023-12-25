@@ -112,5 +112,3 @@ void f12(int a)
     }
     while (a);
 }
-
-void main() {}
